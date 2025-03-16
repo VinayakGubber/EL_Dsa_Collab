@@ -1,3 +1,4 @@
+//doubly linked list naive approach 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -25,7 +26,7 @@ void findPairsWithGivenSum(int target, Node* head) {
 
     printf("Pairs with the given sum:\n");
     while (currNode != NULL) {
-        int x = target - currNode->data;
+        int x = target - currNode->data;g
 
         // Check if the required value exists in the visited array
         if (x >= 0 && visited[x]) {
