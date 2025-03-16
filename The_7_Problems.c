@@ -64,3 +64,107 @@ int main()
 }
 
 // End of problem
+
+
+// Sort A Stack using recursion 
+
+// Code for Recursive sorting using Insert Function:Given A stack, the task is to start to sort it such that the top of the stack has the greatest element
+ 
+#include <stdio.h> 
+#include <stdlib.h> 
+// Structure of a stack 
+typedef struct Stack { 
+int top; 
+int capacity; 
+int *array; 
+} Stack; 
+// Function to create a stack 
+Stack* createStack(int capacity) { 
+Stack* stack = (Stack*)malloc(sizeof(Stack)); 
+stack->capacity = capacity; 
+    stack->top = -1; 
+    stack->array = (int*)malloc(stack->capacity * sizeof(int)); 
+    return stack; 
+} 
+ 
+// Check if the stack is empty 
+int isEmpty(Stack* stack) { 
+    return stack->top == -1; 
+} 
+ 
+// Push operation 
+void push(Stack* stack, int item) { 
+    stack->array[++stack->top] = item; 
+} 
+ 
+// Pop operation 
+int pop(Stack* stack) { 
+    if (isEmpty(stack)) 
+        return -1; 
+    return stack->array[stack->top--]; 
+} 
+ 
+// Peek operation 
+int peek(Stack* stack) { 
+    return stack->array[stack->top]; 
+} 
+ 
+// Function to insert an element in sorted order 
+void sortedInsert(Stack* stack, int element) { 
+    if (isEmpty(stack) || peek(stack) <= element) { 
+        push(stack, element); 
+        return; 
+    } 
+     
+    // Remove the top item and recursively insert the current element 
+    int temp = pop(stack); 
+    sortedInsert(stack, element); 
+     
+    // Push the popped element back 
+    push(stack, temp); 
+} 
+ 
+// Function to sort the stack 
+void sortStack(Stack* stack) { 
+    if (!isEmpty(stack)) { 
+        // Pop the top element 
+        int temp = pop(stack); 
+         
+        // Sort the remaining stack 
+        sortStack(stack); 
+         
+        // Insert the popped element in sorted order 
+        sortedInsert(stack, temp); 
+    } 
+} 
+ 
+// Function to print the stack 
+void printStack(Stack* stack) { 
+    while (!isEmpty(stack)) { 
+        printf("%d ", pop(stack)); 
+    } 
+    printf("\n"); 
+} 
+ 
+// Driver code 
+int main() { 
+    Stack* stack = createStack(100); 
+     
+    push(stack, 11); 
+    push(stack, 2); 
+    push(stack, 32); 
+    push(stack, 3); 
+    push(stack, 41); 
+     
+    sortStack(stack); 
+     
+    printStack(stack); // Expected Output: 41 32 11 3 2 
+     
+    // Free allocated memory 
+    free(stack->array); 
+    free(stack); 
+     
+    return 0; 
+}
+
+// End of problem
