@@ -125,3 +125,56 @@ int main()
     findSecondMostRepeated(arr, n);
     return 0;
 }
+//Program To return the number of nodes in the BST whose value lie in the given range.
+#include <stdio.h>
+#include <stdlib.h>
+// Structure of a BST node
+typedef struct Node {
+int data;
+struct Node *left, *right;
+} Node;
+// Function to create a new node
+Node* newNode(int data) {
+Node* temp = (Node*)malloc(sizeof(Node));
+temp->data = data;
+temp->left = temp->right = NULL;
+return temp;
+}
+// Optimized function to count nodes in range
+int countNodesInRangeOptimized(Node* root, int l, int h) {
+if (root == NULL)
+return 0;
+// If the node's value is in range, count it and explore both sides
+if (root->data >= l && root->data <= h)
+return 1 + countNodesInRangeOptimized(root->left, l, h) + countNodesInRangeOptimized(root->right, l, h);
+// If the node's value is smaller than l, go right
+if (root->data < l)
+return countNodesInRangeOptimized(root->right, l, h);
+// If the node's value is greater than h, go left
+return countNodesInRangeOptimized(root->left, l, h);
+}
+// Insert a node in BST
+Node* insert(Node* root, int data) {
+if (root == NULL)
+return newNode(data);
+if (data < root->data)
+root->left = insert(root->left, data);
+else
+root->right = insert(root->right, data);
+return root;
+}
+// Driver Code
+int main() {
+Node* root = NULL;
+root = insert(root, 10);
+root = insert(root, 5);
+root = insert(root, 1);
+root = insert(root, 8);
+root = insert(root, 15);
+root = insert(root, 12);
+root = insert(root, 20);
+int l = 5, h = 15;
+printf("Optimized Approach: Nodes in range [%d, %d] = %d\n", l, h, countNodesInRangeOptimized(root, l, h));
+return 0;
+}
+
