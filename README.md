@@ -1,4 +1,4 @@
-# Videos of the problems
+# Video of the problems
 
 Video Tutorial: https://drive.google.com/drive/folders/1bE3f3UdYSvwXLPIV3Nru_-0_1k5IHbJh?usp=sharing
 
