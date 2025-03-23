@@ -1,66 +1,79 @@
-//doubly linked list naive approach 
+//IN OPTIMAL APPROACH CODE:
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
-// Node structure for the linked list
 typedef struct Node {
-    int data;
-    struct Node* next;
+ int data;
+ struct Node* next;
+ struct Node* prev;
 } Node;
-
-// Function to create a new node
-Node* createNode(int value) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = value;
-    newNode->next = NULL;
-    return newNode;
+typedef struct DoublyLinkedList {
+ Node* head;
+ Node* tail;
+} DoublyLinkedList;
+Node* createNode(int data) {
+ Node* newNode = (Node*)malloc(sizeof(Node));
+ newNode->data = data;
+ newNode->next = NULL;
+ newNode->prev = NULL;
+ return newNode;
 }
-
-// Function to find pairs with the given sum
-void findPairsWithGivenSum(int target, Node* head) {
-    // Using an array to store visited values
-    int visited[1000] = {0};  // Assuming values in the range [0, 999]
-    Node* currNode = head;
-    bool found = false;
-
-    printf("Pairs with the given sum:\n");
-    while (currNode != NULL) {
-        int x = target - currNode->data;g
-
-        // Check if the required value exists in the visited array
-        if (x >= 0 && visited[x]) {
-            printf("%d %d\n", x, currNode->data);
-            found = true;
-        }
-
-        // Mark the current value as visited
-        visited[currNode->data] = 1;
-        currNode = currNode->next;
-    }
-
-    if (!found) {
-        printf("No pairs found.\n");
-    }
+void addNode(DoublyLinkedList* dll, int data) {
+Node* newNode = createNode(data);
+ if (dll->head == NULL) {
+ dll->head = dll->tail = newNode;
+ } else {
+ dll->tail->next = newNode;
+ newNode->prev = dll->tail;
+ dll->tail = newNode;
+ }
 }
-
+void findPairsWithSum(DoublyLinkedList* dll, int target) {
+ if (dll->head == NULL || dll->tail == NULL) {
+ printf("The list is empty or has only one element.\n");
+ return;
+ }
+ Node* left = dll->head;
+Node* right = dll->tail;
+ printf("Pairs with sum %d:\n", target);
+ int found = 0;
+while (left != NULL && right != NULL && left != right && left->next != right) {
+ int sum = left->data + right->data;
+if (sum == target) {
+printf("(%d, %d)\n", left->data, right->data);
+ found = 1;
+ left = left->next;
+ right = right->prev;
+ } else if (sum < target) {
+ left = left->next;
+ } else {
+ right = right->prev;
+ }
+ }
+ if (!found) {
+ printf("No pairs found.\n");
+ }
+}
 int main() {
-    // Creating a singly linked list: 1 -> 2 -> 4 -> 5
-    Node* head = createNode(1);
-    head->next = createNode(2);
-    head->next->next = createNode(4);
-    head->next->next->next = createNode(5);
+ DoublyLinkedList dll;
+ dll.head = NULL;
+ dll.tail = NULL;
 
-    int target = 7;
-    findPairsWithGivenSum(target, head);
 
-    // Free the allocated memory
-    Node* current = head;
-    while (current != NULL) {
-        Node* temp = current;
-        current = current->next;
-        free(temp);
-    }
+addNode(&dll, 1);
+ addNode(&dll, 2);
+ addNode(&dll, 4);
+ addNode(&dll, 5);
+ addNode(&dll, 6);
+ addNode(&dll, 8);
+ addNode(&dll, 9);
+int target = 10;
 
-    return 0;
+findPairsWithSum(&dll, target);
+ Node* temp;
+ while (dll.head != NULL) {
+ temp = dll.head;
+ dll.head = dll.head->next;
+ free(temp);
+ }
+ return 0;
 }
