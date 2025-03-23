@@ -29,7 +29,7 @@ void findPairsWithGivenSum(int target, Node* head) {
         int x = target - currNode->data;g
 
         // Check if the required value exists in the visited array
-        if (x >= 0 && visited[x]) {
+        if(x >= 0 && visited[x]) {
             printf("%d %d\n", x, currNode->data);
             found = true;
         }
