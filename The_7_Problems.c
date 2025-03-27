@@ -1,7 +1,7 @@
 
+<-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
 
-
-//IN OPTIMAL APPROACH CODE:
+   //IN OPTIMAL APPROACH CODE:
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct Node {
@@ -106,7 +106,6 @@ void inorder(TreeNode* root) {
  if (root == NULL) return;
 inorder(root->left);
  printf("%d ", root->val);
-
 inorder(root->right);
 }
 int main() {
