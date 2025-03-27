@@ -291,5 +291,48 @@ int main() {
     return 0; 
 }
 
-//end of programg
+//end of program
 
+
+//Find pivot element in a sorted array
+
+//Code for optimal approach
+
+#include <stdio.h> 
+ 
+// Optimal approach: Binary Search (O(log n)) 
+int findPivotBinary(int arr[], int n) { 
+    int low = 0, high = n - 1; 
+ 
+    while (low <= high) { 
+        int mid = low + (high - low) / 2; 
+ 
+        // Check if mid is the pivot 
+        if (mid < high && arr[mid] > arr[mid + 1]) 
+            return mid; 
+ 
+        // Check if mid-1 is the pivot 
+        if (mid > low && arr[mid] < arr[mid - 1]) 
+            return mid - 1; 
+ 
+        // Move left or right 
+        if (arr[low] >= arr[mid]) 
+            high = mid - 1; 
+        else 
+            low = mid + 1; 
+    } 
+    return n - 1; // If no rotation found, return last index 
+} 
+ 
+// Driver Code 
+int main() { 
+    int arr[] = {7, 9, 11, 12, 15, 2, 5}; // Example rotated array 
+    int n = sizeof(arr) / sizeof(arr[0]); 
+ 
+    int pivotIndex = findPivotBinary(arr, n); 
+    printf("Pivot element is at index %d, value %d\n", pivotIndex, arr[pivotIndex]); 
+ 
+    return 0; 
+}
+
+//End of program
