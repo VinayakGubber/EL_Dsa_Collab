@@ -253,312 +253,308 @@ int main()
 
 // End of problem
 
-// Problem: Find pairs with a given sum in a Doubly Linked List
-// Optimal Approach: Using two-pointer technique
-// Description: Traverse the list with two pointers, one from the head and one from the tail,
-// moving them towards each other based on the sum comparison to efficiently find the pairs.
+// Sort a Stack using recursion
+
+// Code for Optimal Approach (Uses recursive insertion sort technique) - The idea is to remove elements from the stack recursively until it's empty, then insert each element back in sorted order using recursion.
 
 #include <stdio.h>
 #include <stdlib.h>
 
-// Structure for a Doubly Linked List Node
-typedef struct Node
+// Structure of a stack
+typedef struct Stack
 {
-    int data;
-    struct Node *next;
-    struct Node *prev;
-} Node;
+    int top;
+    int capacity;
+    int *array;
+} Stack;
 
-// Structure for Doubly Linked List
-typedef struct DoublyLinkedList
+// Function to create a stack
+Stack *createStack(int capacity)
 {
-    Node *head;
-    Node *tail;
-} DoublyLinkedList;
-
-// Function to create a new node
-Node *createNode(int data)
-{
-    Node *newNode = (Node *)malloc(sizeof(Node));
-    newNode->data = data;
-    newNode->next = NULL;
-    newNode->prev = NULL;
-    return newNode;
+    Stack *stack = (Stack *)malloc(sizeof(Stack));
+    stack->capacity = capacity;
+    stack->top = -1;
+    stack->array = (int *)malloc(stack->capacity * sizeof(int));
+    return stack;
 }
 
-// Function to add a node to the end of the doubly linked list
-void addNode(DoublyLinkedList *dll, int data)
+// Function to check if stack is empty
+int isEmpty(Stack *stack)
 {
-    Node *newNode = createNode(data);
-    if (dll->head == NULL)
-    {
-        dll->head = dll->tail = newNode;
-    }
-    else
-    {
-        dll->tail->next = newNode;
-        newNode->prev = dll->tail;
-        dll->tail = newNode;
-    }
+    return stack->top == -1;
 }
 
-// Function to find pairs with a given sum in a doubly linked list
-void findPairsWithSum(DoublyLinkedList *dll, int target)
+// Push operation
+void push(Stack *stack, int item)
 {
-    if (dll->head == NULL || dll->tail == NULL)
+    stack->array[++stack->top] = item;
+}
+
+// Pop operation
+int pop(Stack *stack)
+{
+    if (isEmpty(stack))
+        return -1;
+    return stack->array[stack->top--];
+}
+
+// Peek operation
+int peek(Stack *stack)
+{
+    return stack->array[stack->top];
+}
+
+// Function to insert an element in sorted order
+void sortedInsert(Stack *stack, int element)
+{
+    // Base case: if stack is empty or top element <= current element
+    if (isEmpty(stack) || peek(stack) <= element)
     {
-        printf("The list is empty or has only one element.\n");
+        push(stack, element);
         return;
     }
 
-    Node *left = dll->head;
-    Node *right = dll->tail;
-    printf("Pairs with sum %d:\n", target);
-    int found = 0;
+    // Remove top element and recursively insert current element
+    int temp = pop(stack);
+    sortedInsert(stack, element);
 
-    while (left != NULL && right != NULL && left != right && left->next != right)
-    {
-        int sum = left->data + right->data;
-        if (sum == target)
-        {
-            printf("(%d, %d)\n", left->data, right->data);
-            found = 1;
-            left = left->next;
-            right = right->prev;
-        }
-        else if (sum < target)
-        {
-            left = left->next;
-        }
-        else
-        {
-            right = right->prev;
-        }
-    }
+    // Push the popped element back
+    push(stack, temp);
+}
 
-    if (!found)
+// Function to sort the stack
+void sortStack(Stack *stack)
+{
+    // Base case: if stack is not empty
+    if (!isEmpty(stack))
     {
-        printf("No pairs found.\n");
+        // Pop the top element
+        int temp = pop(stack);
+
+        // Sort the remaining stack
+        sortStack(stack);
+
+        // Insert the popped element in sorted order
+        sortedInsert(stack, temp);
     }
 }
 
-// Driver Code
+// Function to print the stack
+void printStack(Stack *stack)
+{
+    while (!isEmpty(stack))
+    {
+        printf("%d ", pop(stack));
+    }
+    printf("\n");
+}
+
+// Driver code
 int main()
 {
-    DoublyLinkedList dll;
-    dll.head = NULL;
-    dll.tail = NULL;
+    Stack *stack = createStack(100);
 
-    // Adding elements to the doubly linked list
-    addNode(&dll, 1);
-    addNode(&dll, 2);
-    addNode(&dll, 4);
-    addNode(&dll, 5);
-    addNode(&dll, 6);
-    addNode(&dll, 8);
-    addNode(&dll, 9);
+    push(stack, 11);
+    push(stack, 2);
+    push(stack, 32);
+    push(stack, 3);
+    push(stack, 41);
 
-    int target = 10;
+    // Sort the stack
+    sortStack(stack);
 
-    // Finding pairs with the given sum
-    findPairsWithSum(&dll, target);
+    // Print sorted stack
+    printStack(stack); // Expected Output: 41 32 11 3 2
 
     // Free allocated memory
-    Node *temp;
-    while (dll.head != NULL)
-    {
-        temp = dll.head;
-        dll.head = dll.head->next;
-        free(temp);
-    }
+    free(stack->array);
+    free(stack);
 
     return 0;
 }
 
+// End of problem
+
 // End of program
 
-// Problem: Inorder Traversal of a Binary Tree
-// Optimal Approach: Recursive Inorder Traversal
-// Description: Recursively visit the left subtree, print the current node, then visit the right subtree.
+// Find pivot element in a sorted and rotated array
+
+// Code for Optimal Approach (Uses Binary Search - O(log n)) - The idea is to use binary search to find the index where the next element is smaller, which indicates the pivot point (maximum element).
 
 #include <stdio.h>
-#include <stdlib.h>
 
-// Structure for a Binary Tree Node
-typedef struct TreeNode
+// Function to find pivot element using binary search
+int findPivotBinary(int arr[], int n)
 {
-    int val;
-    struct TreeNode *left;
-    struct TreeNode *right;
-} TreeNode;
+    int low = 0, high = n - 1;
 
-// Function to create a new node
-TreeNode *createNode(int value)
-{
-    TreeNode *newNode = (TreeNode *)malloc(sizeof(TreeNode));
-    newNode->val = value;
-    newNode->left = newNode->right = NULL;
-    return newNode;
+    // Binary search loop
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+
+        // Check if mid element is pivot
+        if (mid < high && arr[mid] > arr[mid + 1])
+            return mid;
+
+        // Check if mid-1 element is pivot
+        if (mid > low && arr[mid] < arr[mid - 1])
+            return mid - 1;
+
+        // Decide whether to search left or right half
+        if (arr[low] >= arr[mid])
+            high = mid - 1;
+        else
+            low = mid + 1;
+    }
+
+    // If no rotation found, return last index (array is sorted)
+    return n - 1;
 }
 
-// Function to perform inorder traversal
-void inorder(TreeNode *root)
-{
-    if (root == NULL)
-        return;
-    inorder(root->left);
-    printf("%d ", root->val);
-    inorder(root->right);
-}
-
-// Driver Code
+// Driver code
 int main()
 {
-    // Creating a sample binary tree
-    TreeNode *root = createNode(3);
-    root->left = createNode(2);
-    root->right = createNode(4);
-    root->left->left = createNode(1);
-    root->left->right = createNode(5);
-    root->right->left = createNode(6);
-    root->right->right = createNode(8);
+    int arr[] = {7, 9, 11, 12, 15, 2, 5}; // Example rotated sorted array
+    int n = sizeof(arr) / sizeof(arr[0]);
 
-    // Performing inorder traversal
-    inorder(root); // Expected Output: 1 2 5 3 6 4 8
+    // Find pivot index
+    int pivotIndex = findPivotBinary(arr, n);
+
+    // Print result
+    printf("Pivot element is at index %d, value %d\n", pivotIndex, arr[pivotIndex]);
 
     return 0;
 }
 
-// End of program
+// End of problem
 
-
-
-
-//To return the number of nodes in the BST whose value lie in the given range.
-//Optimal Approach:
-//Use BST properties to avoid unnecessary traversal: 
-//If root->data < l, search only in the right subtree.
-//If root->data > h, search only in the left subtree.
-//If root->data is in range [l, h], count it and explore both subtrees
+// To return the number of nodes in the BST whose value lie in the given range.
+// Optimal Approach:
+// Use BST properties to avoid unnecessary traversal:
+// If root->data < l, search only in the right subtree.
+// If root->data > h, search only in the left subtree.
+// If root->data is in range [l, h], count it and explore both subtrees
 
 #include <stdio.h>
 #include <stdlib.h>
 // Structure of a BST node
-typedef struct Node 
-    {
-        int data;
-        struct Node *left, *right;
-    } Node;
-    // Function to create a new node
-    Node* newNode(int data) 
-    {
-        Node* temp = (Node*)malloc(sizeof(Node));
-        temp->data = data;
-        temp->left = temp->right = NULL;
-        return temp;
-    }
-    // Optimized function to count nodes in range
-    int countNodesInRangeOptimized(Node* root, int l, int h) 
-    {
-        if (root == NULL)
+typedef struct Node
+{
+    int data;
+    struct Node *left, *right;
+} Node;
+// Function to create a new node
+Node *newNode(int data)
+{
+    Node *temp = (Node *)malloc(sizeof(Node));
+    temp->data = data;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+// Optimized function to count nodes in range
+int countNodesInRangeOptimized(Node *root, int l, int h)
+{
+    if (root == NULL)
         return 0;
-        // If the node's value is in range, count it and explore both sides
-        if (root->data >= l && root->data <= h)
+    // If the node's value is in range, count it and explore both sides
+    if (root->data >= l && root->data <= h)
         return 1 + countNodesInRangeOptimized(root->left, l, h) + countNodesInRangeOptimized(root->right, l, h);
-        // If the node's value is smaller than l, go right
-        if (root->data < l)
+    // If the node's value is smaller than l, go right
+    if (root->data < l)
         return countNodesInRangeOptimized(root->right, l, h);
-        // If the node's value is greater than h, go left
-        return countNodesInRangeOptimized(root->left, l, h);
-    }
-    // Insert a node in BST
-    Node* insert(Node* root, int data) 
-    {
-        if (root == NULL)
+    // If the node's value is greater than h, go left
+    return countNodesInRangeOptimized(root->left, l, h);
+}
+// Insert a node in BST
+Node *insert(Node *root, int data)
+{
+    if (root == NULL)
         return newNode(data);
-        if (data < root->data)
+    if (data < root->data)
         root->left = insert(root->left, data);
-        else
+    else
         root->right = insert(root->right, data);
-        return root;
-    }
-    // Driver Code
-    int main() 
-    {
-        Node* root = NULL;
-        root = insert(root, 10);
-        root = insert(root, 5);
-        root = insert(root, 1);
-        root = insert(root, 8);
-        root = insert(root, 15);
-        root = insert(root, 12);
-        root = insert(root, 20);
-        int l = 5, h = 15;
-        printf("Optimized Approach: Nodes in range [%d, %d] = %d\n", l, h, countNodesInRangeOptimized(root, l, h));
-        return 0;
-    }
-//End of the program.
+    return root;
+}
+// Driver Code
+int main()
+{
+    Node *root = NULL;
+    root = insert(root, 10);
+    root = insert(root, 5);
+    root = insert(root, 1);
+    root = insert(root, 8);
+    root = insert(root, 15);
+    root = insert(root, 12);
+    root = insert(root, 20);
+    int l = 5, h = 15;
+    printf("Optimized Approach: Nodes in range [%d, %d] = %d\n", l, h, countNodesInRangeOptimized(root, l, h));
+    return 0;
+}
+// End of the program.
 
-
-
-
-//Find out the second most repeated (or frequent) string in the given sequence.
-//Optimal Approach:
-//Sort the array (O(N log N)). 
-//Count the frequencies while iterating through the sorted array (O(N)). 
-//Find the most frequent and second most frequent strings.
+// Find out the second most repeated (or frequent) string in the given sequence.
+// Optimal Approach:
+// Sort the array (O(N log N)).
+// Count the frequencies while iterating through the sorted array (O(N)).
+// Find the most frequent and second most frequent strings.
 #include <stdio.h>
 #include <string.h>
 #define MAX 100
 // Function to sort an array of strings (using Bubble Sort for simplicity)
-    void sortStrings(char arr[][MAX], int n) 
+void sortStrings(char arr[][MAX], int n)
+{
+    char temp[MAX];
+    for (int i = 0; i < n - 1; i++)
     {
-        char temp[MAX];
-        for (int i = 0; i < n - 1; i++) 
+        for (int j = i + 1; j < n; j++)
         {
-            for (int j = i + 1; j < n; j++) 
+            if (strcmp(arr[i], arr[j]) > 0)
             {
-                if (strcmp(arr[i], arr[j]) > 0) 
-                {
-                    strcpy(temp, arr[i]);
-                    strcpy(arr[i], arr[j]);
-                    strcpy(arr[j], temp);
-                }
-            }       
+                strcpy(temp, arr[i]);
+                strcpy(arr[i], arr[j]);
+                strcpy(arr[j], temp);
+            }
         }
     }
+}
 // Function to find the second most repeated string
-void findSecondMostRepeated(char arr[][MAX], int n) 
+void findSecondMostRepeated(char arr[][MAX], int n)
 {
     // Step 1: Sort the array
     sortStrings(arr, n);
     // Step 2: Count frequencies
     int max1 = 0, max2 = 0, count = 1;
     char mostFrequent[MAX] = "", secondMostFrequent[MAX] = "";
-    for (int i = 1; i <= n; i++) 
+    for (int i = 1; i <= n; i++)
     {
-        if (i < n && strcmp(arr[i], arr[i - 1]) == 0) 
+        if (i < n && strcmp(arr[i], arr[i - 1]) == 0)
         {
             count++;
-        } else {
+        }
+        else
+        {
             // Update most and second most frequent
-            if (count > max1) 
+            if (count > max1)
             {
                 max2 = max1;
                 strcpy(secondMostFrequent, mostFrequent);
                 max1 = count;
                 strcpy(mostFrequent, arr[i - 1]);
-            } else if (count > max2) {
+            }
+            else if (count > max2)
+            {
                 max2 = count;
                 strcpy(secondMostFrequent, arr[i - 1]);
             }
-                count = 1; // Reset count for next word
+            count = 1; // Reset count for next word
         }
     }
-printf("Second most repeated string: %s\n", secondMostFrequent);
+    printf("Second most repeated string: %s\n", secondMostFrequent);
 }
 // Driver code
-int main() 
+int main()
 {
     char arr[][MAX] = {"apple", "banana", "apple", "orange", "banana", "banana", "grape", "apple"};
     int n = sizeof(arr) / sizeof(arr[0]);
@@ -566,5 +562,4 @@ int main()
     return 0;
 }
 
-//end of the program
-
+// end of the program
