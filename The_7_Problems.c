@@ -444,55 +444,63 @@ int main()
 #include <stdio.h>
 #include <stdlib.h>
 // Structure of a BST node
-typedef struct Node {
-int data;
-struct Node *left, *right;
-} Node;
-// Function to create a new node
-Node* newNode(int data) {
-Node* temp = (Node*)malloc(sizeof(Node));
-temp->data = data;
-temp->left = temp->right = NULL;
-return temp;
-}
-// Optimized function to count nodes in range
-int countNodesInRangeOptimized(Node* root, int l, int h) {
-if (root == NULL)
-return 0;
-// If the node's value is in range, count it and explore both sides
-if (root->data >= l && root->data <= h)
-return 1 + countNodesInRangeOptimized(root->left, l, h) + countNodesInRangeOptimized(root->right, l, h);
-// If the node's value is smaller than l, go right
-if (root->data < l)
-return countNodesInRangeOptimized(root->right, l, h);
-// If the node's value is greater than h, go left
-return countNodesInRangeOptimized(root->left, l, h);
-}
-// Insert a node in BST
-Node* insert(Node* root, int data) {
-if (root == NULL)
-return newNode(data);
-if (data < root->data)
-root->left = insert(root->left, data);
-else
-root->right = insert(root->right, data);
-return root;
-}
-// Driver Code
-int main() {
-Node* root = NULL;
-root = insert(root, 10);
-root = insert(root, 5);
-root = insert(root, 1);
-root = insert(root, 8);
-root = insert(root, 15);
-root = insert(root, 12);
-root = insert(root, 20);
-int l = 5, h = 15;
-printf("Optimized Approach: Nodes in range [%d, %d] = %d\n", l, h, countNodesInRangeOptimized(root, l, h));
-return 0;
-}
+typedef struct Node 
+    {
+        int data;
+        struct Node *left, *right;
+    } Node;
+    // Function to create a new node
+    Node* newNode(int data) 
+    {
+        Node* temp = (Node*)malloc(sizeof(Node));
+        temp->data = data;
+        temp->left = temp->right = NULL;
+        return temp;
+    }
+    // Optimized function to count nodes in range
+    int countNodesInRangeOptimized(Node* root, int l, int h) 
+    {
+        if (root == NULL)
+        return 0;
+        // If the node's value is in range, count it and explore both sides
+        if (root->data >= l && root->data <= h)
+        return 1 + countNodesInRangeOptimized(root->left, l, h) + countNodesInRangeOptimized(root->right, l, h);
+        // If the node's value is smaller than l, go right
+        if (root->data < l)
+        return countNodesInRangeOptimized(root->right, l, h);
+        // If the node's value is greater than h, go left
+        return countNodesInRangeOptimized(root->left, l, h);
+    }
+    // Insert a node in BST
+    Node* insert(Node* root, int data) 
+    {
+        if (root == NULL)
+        return newNode(data);
+        if (data < root->data)
+        root->left = insert(root->left, data);
+        else
+        root->right = insert(root->right, data);
+        return root;
+    }
+    // Driver Code
+    int main() 
+    {
+        Node* root = NULL;
+        root = insert(root, 10);
+        root = insert(root, 5);
+        root = insert(root, 1);
+        root = insert(root, 8);
+        root = insert(root, 15);
+        root = insert(root, 12);
+        root = insert(root, 20);
+        int l = 5, h = 15;
+        printf("Optimized Approach: Nodes in range [%d, %d] = %d\n", l, h, countNodesInRangeOptimized(root, l, h));
+        return 0;
+    }
 //End of the program.
+
+
+
 
 //Find out the second most repeated (or frequent) string in the given sequence.
 //Optimal Approach:
@@ -503,50 +511,59 @@ return 0;
 #include <string.h>
 #define MAX 100
 // Function to sort an array of strings (using Bubble Sort for simplicity)
-void sortStrings(char arr[][MAX], int n) {
-char temp[MAX];
-for (int i = 0; i < n - 1; i++) {
-for (int j = i + 1; j < n; j++) {
-if (strcmp(arr[i], arr[j]) > 0) {
-strcpy(temp, arr[i]);
-strcpy(arr[i], arr[j]);
-strcpy(arr[j], temp);
-}
-}
-}
-}
+    void sortStrings(char arr[][MAX], int n) 
+    {
+        char temp[MAX];
+        for (int i = 0; i < n - 1; i++) 
+        {
+            for (int j = i + 1; j < n; j++) 
+            {
+                if (strcmp(arr[i], arr[j]) > 0) 
+                {
+                    strcpy(temp, arr[i]);
+                    strcpy(arr[i], arr[j]);
+                    strcpy(arr[j], temp);
+                }
+            }       
+        }
+    }
 // Function to find the second most repeated string
-void findSecondMostRepeated(char arr[][MAX], int n) {
-// Step 1: Sort the array
-sortStrings(arr, n);
-// Step 2: Count frequencies
-int max1 = 0, max2 = 0, count = 1;
-char mostFrequent[MAX] = "", secondMostFrequent[MAX] = "";
-for (int i = 1; i <= n; i++) {
-if (i < n && strcmp(arr[i], arr[i - 1]) == 0) {
-count++;
-} else {
-// Update most and second most frequent
-if (count > max1) {
-max2 = max1;
-strcpy(secondMostFrequent, mostFrequent);
-max1 = count;
-strcpy(mostFrequent, arr[i - 1]);
-} else if (count > max2) {
-max2 = count;
-strcpy(secondMostFrequent, arr[i - 1]);
-}
-count = 1; // Reset count for next word
-}
-}
+void findSecondMostRepeated(char arr[][MAX], int n) 
+{
+    // Step 1: Sort the array
+    sortStrings(arr, n);
+    // Step 2: Count frequencies
+    int max1 = 0, max2 = 0, count = 1;
+    char mostFrequent[MAX] = "", secondMostFrequent[MAX] = "";
+    for (int i = 1; i <= n; i++) 
+    {
+        if (i < n && strcmp(arr[i], arr[i - 1]) == 0) 
+        {
+            count++;
+        } else {
+            // Update most and second most frequent
+            if (count > max1) 
+            {
+                max2 = max1;
+                strcpy(secondMostFrequent, mostFrequent);
+                max1 = count;
+                strcpy(mostFrequent, arr[i - 1]);
+            } else if (count > max2) {
+                max2 = count;
+                strcpy(secondMostFrequent, arr[i - 1]);
+            }
+                count = 1; // Reset count for next word
+        }
+    }
 printf("Second most repeated string: %s\n", secondMostFrequent);
 }
 // Driver code
-int main() {
-char arr[][MAX] = {"apple", "banana", "apple", "orange", "banana", "banana", "grape", "apple"};
-int n = sizeof(arr) / sizeof(arr[0]);
-findSecondMostRepeated(arr, n);
-return 0;
+int main() 
+{
+    char arr[][MAX] = {"apple", "banana", "apple", "orange", "banana", "banana", "grape", "apple"};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    findSecondMostRepeated(arr, n);
+    return 0;
 }
 
 //end of the program
