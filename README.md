@@ -33,13 +33,26 @@ A collaborative repository focused on solving 7 fundamental Data Structures and 
 
 The repository contains 7 DSA problems:
 
-1. Problem 1: Maximum and minimum of an array using minimum number of comparisons
-2. Problem 2: [Brief description]
-3. Problem 3: [Brief description]
-4. Problem 4: [Brief description]
-5. Problem 5: [Brief description]
-6. Problem 6: [Brief description]
-7. Problem 7: [Brief description]
+Problem 1: Find pairs in a doubly linked list with a given sum
+Uses two-pointer technique to find all pairs in a doubly linked list whose sum equals the target value.
+
+Problem 2: Inorder traversal of a binary tree
+Performs an inorder (Left, Root, Right) traversal of a binary tree using recursion.
+
+Problem 3: Maximum and minimum of an array using minimum number of comparisons
+Determines the maximum and minimum elements in an array with minimum comparisons by processing elements in pairs.
+
+Problem 4: Sort a stack using recursion
+Recursively sorts a stack in descending order without using any extra stack or array.
+
+Problem 5: Find pivot element in a sorted and rotated array
+Finds the pivot (maximum) element in a sorted and rotated array using binary search.
+
+Problem 6: Count nodes in BST whose value lies in a given range
+Counts the number of nodes in a Binary Search Tree whose values lie within a specified range using optimized traversal.
+
+Problem 7: Find the second most repeated string in a sequence
+Finds the second most frequently occurring string in a sequence using sorting and frequency counting.
 
 ## License
 
