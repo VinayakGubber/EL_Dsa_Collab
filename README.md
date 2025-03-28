@@ -25,7 +25,7 @@ A collaborative repository focused on solving 7 fundamental Data Structures and 
 ## Collaborators
 
 - Chetana C S (Collaborator)
-- Rakshita Dhas (Collaborator)
+- Rakshitha Das (Collaborator)
 - Rohit Doddamani (Collaborator)
 - Vinayak Gubber (Collaborator/Repository Owner)
 
