@@ -437,9 +437,9 @@ int main()
 //To return the number of nodes in the BST whose value lie in the given range.
 //Optimal Approach:
 //Use BST properties to avoid unnecessary traversal: 
-//•	If root->data < l, search only in the right subtree.
-//•	If root->data > h, search only in the left subtree.
-//•	If root->data is in range [l, h], count it and explore both subtrees
+//If root->data < l, search only in the right subtree.
+//If root->data > h, search only in the left subtree.
+//If root->data is in range [l, h], count it and explore both subtrees
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -493,3 +493,60 @@ printf("Optimized Approach: Nodes in range [%d, %d] = %d\n", l, h, countNodesInR
 return 0;
 }
 //End of the program.
+
+//Find out the second most repeated (or frequent) string in the given sequence.
+//Optimal Approach:
+//Sort the array (O(N log N)). 
+//Count the frequencies while iterating through the sorted array (O(N)). 
+//Find the most frequent and second most frequent strings.
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+// Function to sort an array of strings (using Bubble Sort for simplicity)
+void sortStrings(char arr[][MAX], int n) {
+char temp[MAX];
+for (int i = 0; i < n - 1; i++) {
+for (int j = i + 1; j < n; j++) {
+if (strcmp(arr[i], arr[j]) > 0) {
+strcpy(temp, arr[i]);
+strcpy(arr[i], arr[j]);
+strcpy(arr[j], temp);
+}
+}
+}
+}
+// Function to find the second most repeated string
+void findSecondMostRepeated(char arr[][MAX], int n) {
+// Step 1: Sort the array
+sortStrings(arr, n);
+// Step 2: Count frequencies
+int max1 = 0, max2 = 0, count = 1;
+char mostFrequent[MAX] = "", secondMostFrequent[MAX] = "";
+for (int i = 1; i <= n; i++) {
+if (i < n && strcmp(arr[i], arr[i - 1]) == 0) {
+count++;
+} else {
+// Update most and second most frequent
+if (count > max1) {
+max2 = max1;
+strcpy(secondMostFrequent, mostFrequent);
+max1 = count;
+strcpy(mostFrequent, arr[i - 1]);
+} else if (count > max2) {
+max2 = count;
+strcpy(secondMostFrequent, arr[i - 1]);
+}
+count = 1; // Reset count for next word
+}
+}
+printf("Second most repeated string: %s\n", secondMostFrequent);
+}
+// Driver code
+int main() {
+char arr[][MAX] = {"apple", "banana", "apple", "orange", "banana", "banana", "grape", "apple"};
+int n = sizeof(arr) / sizeof(arr[0]);
+findSecondMostRepeated(arr, n);
+return 0;
+}
+
+
