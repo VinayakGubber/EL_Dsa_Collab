@@ -1,6 +1,6 @@
 # Video of the problems
 
-Video Tutorial: https://drive.google.com/drive/folders/1bE3f3UdYSvwXLPIV3Nru_-0_1k5IHbJh?usp=sharing
+Video Tutorial: https://youtu.be/CwfG7T71tAM
 
 # EL_Dsa_Collab
 
